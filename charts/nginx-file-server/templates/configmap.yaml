@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "nginx-file-server.fullname" . }}
+  labels:
+    {{- include "nginx-file-server.labels" . | nindent 4 }}
+data:
+  nginx.conf: |
+    worker_processes  auto;
+    events {
+      worker_connections  1024;
+    }
+    http {
+      include       /etc/nginx/mime.types;
+      default_type  application/octet-stream;
+
+      sendfile {{ .Values.nginx.sendfile }};
+      tcp_nopush {{ .Values.nginx.tcpNopush }};
+      tcp_nodelay {{ .Values.nginx.tcpNodelay }};
+      keepalive_timeout {{ .Values.nginx.keepaliveTimeout }};
+      client_max_body_size {{ .Values.nginx.clientMaxBodySize }};
+
+      server {
+        listen 80;
+        server_name _;
+
+        root /data;
+        autoindex {{ .Values.nginx.autoindex }};
+
+        location / {
+          try_files $uri =404;
+        }
+      }
+
+      {{- if .Values.nginx.extraConfig }}
+      {{ .Values.nginx.extraConfig | nindent 6 }}
+      {{- end }}
+    }
