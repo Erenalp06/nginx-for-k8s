@@ -27,6 +27,11 @@ data:
         root /data;
         autoindex {{ .Values.nginx.autoindex }};
 
+        location = /healthz {
+          access_log off;
+          return 200 "ok\n";
+        }
+
         location / {
           try_files $uri =404;
         }
