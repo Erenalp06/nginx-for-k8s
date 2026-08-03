@@ -1,0 +1,13 @@
+services:
+  nginx-file-server:
+    image: nginx:1.27-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/data:/data:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
