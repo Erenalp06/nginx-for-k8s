@@ -24,7 +24,6 @@ data:
         listen 80;
         server_name _;
 
-        root /data;
         autoindex {{ .Values.nginx.autoindex }};
 
         location = /healthz {
@@ -32,7 +31,8 @@ data:
           return 200 "ok\n";
         }
 
-        location / {
+        location /data/ {
+          alias /data/;
           {{- if .Values.nginx.webdav }}
           dav_methods PUT DELETE MKCOL COPY MOVE;
           create_full_put_path on;
