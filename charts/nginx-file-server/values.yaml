@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: harbor.jgk.io/liman/nginx
   tag: "1.27-alpine"
   pullPolicy: IfNotPresent
 
@@ -37,6 +37,8 @@ nginx:
   tcpNodelay: "on"
   keepaliveTimeout: 65
   autoindex: "off"
+  # PUT ile dosya yükleme (HTTP upload). true yapınca 404 yerine dosya oluşturulur.
+  webdav: true
   extraConfig: ""
 
 podAnnotations: {}

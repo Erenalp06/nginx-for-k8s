@@ -5,7 +5,7 @@ services:
       - "8080:80"
     volumes:
       - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./docker/data:/data:ro
+      - ./docker/data:/data
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "-", "http://localhost/healthz"]
       interval: 10s
